@@ -19,7 +19,7 @@
 
 [^bignote]: Since you have to enter the x and y values in a .txt file to graph an equation, it will be hard
     to calculate those points yourself and enter them in manually. For this, the GetDataPoints.java file exists.
-    <br>In the `printPoints()` method, the `LENGTH` variable should be set to the number of data points that you want. Right now, it is set to 100 data points.
-    <br>The first for-loop will print the x-coordinates. If you want different x-coordinates, you can change it.
-    <br>The second for-loop will print the y-coordinates, and this is where you can
+    <br><br>In the `printPoints()` method, the `LENGTH` variable should be set to the number of data points that you want. Right now, it is set to 100 data points.
+    <br><br>The first for-loop will print the x-coordinates. If you want different x-coordinates, you can change it.
+    <br><br>The second for-loop will print the y-coordinates, and this is where you can
     enter the equation. The equation that is there right now is $200\cos (x) + 200$.
