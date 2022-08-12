@@ -1,9 +1,9 @@
-# Grapher
+# DataGrapher
 
 ### About:
 - This program helps to visualize data by graphing a set of x and y values provided in a .txt file.
 - It automatically scales the points to fit within a certain grid size.
-- It is not recommended to use this to visualize an equation, but if you want to, then click this footnote to find more information about it.[^bignote]
+- You can use this to visualize an equation, but the axes will most likely be innacurate. Click this footnote to find more information about it.[^bignote]
 
 - Comments are added if you would like to understand how the code works or make changes.
 
