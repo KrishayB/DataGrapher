@@ -1,4 +1,4 @@
-# Graphing
+# Grapher
 
 ### About:
 - This program helps to visualize data by graphing a set of x and y values provided in a .txt file.
