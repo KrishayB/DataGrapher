@@ -51,6 +51,7 @@ class GraphingPanel extends JPanel implements ActionListener {
     private JCheckBox showAxes; // For showing graph axes
     private JCheckBox showTickmarks; // For showing tickmarks
     private JCheckBox showLabels; // For showing labels on the graph
+    private JCheckBox printToConsole; // For printing to console
 
     public GraphingPanel() {
         xVals = new ArrayList<Integer>();
@@ -58,8 +59,9 @@ class GraphingPanel extends JPanel implements ActionListener {
         yValsNew = new ArrayList<Integer>();
         xValsNew = new ArrayList<Integer>();
         previousPoint = new int[2];
+        printToConsole = new JCheckBox("Print To Console");
 
-        readFileAndInitArrays("data.txt");
+        readFileAndInitArrays("data_set1.txt");
         analyzeArrays();
 
         setLayout(new BorderLayout());
@@ -101,12 +103,17 @@ class GraphingPanel extends JPanel implements ActionListener {
         showAxes = new JCheckBox("Show Axes");
         showTickmarks = new JCheckBox("Show Tickmarks");
         showLabels = new JCheckBox("Show Labels");
+
         showAxes.setForeground(Color.WHITE);
         showTickmarks.setForeground(Color.WHITE);
         showLabels.setForeground(Color.WHITE);
+        printToConsole.setForeground(Color.WHITE);
+
         showAxes.setSelected(true);
         showTickmarks.setSelected(true);
         showLabels.setSelected(true);
+        printToConsole.setSelected(false);
+
         showAxes.addActionListener(this);
         showTickmarks.addActionListener(this);
         showLabels.addActionListener(this);
@@ -114,6 +121,7 @@ class GraphingPanel extends JPanel implements ActionListener {
         checkBoxPanel.add(showAxes);
         checkBoxPanel.add(showTickmarks);
         checkBoxPanel.add(showLabels);
+        checkBoxPanel.add(printToConsole);
 
         northGrid.add(checkBoxPanel);
 
@@ -129,7 +137,7 @@ class GraphingPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         String command = evt.getActionCommand();
 
-        if (!(command.equals("Show Axes") || command.equals("Show Tickmarks") || command.equals("Show Labels"))) {
+        if (!(command.equals("Show Axes") || command.equals("Show Tickmarks") || command.equals("Show Labels") || command.equals("Print To Console"))) {
             readFileAndInitArrays(command);
             analyzeArrays();
         }
@@ -200,11 +208,12 @@ class GraphingPanel extends JPanel implements ActionListener {
             yVals.add(Integer.parseInt(value));
         }
 
-        System.out.println();
-        System.out.println();
-        System.out.println("x: " + xVals.toString());
-        System.out.println("y: " + yVals.toString());
-        System.out.println();
+        if (printToConsole.isSelected()) {
+            System.out.println("\n\n\n");
+            System.out.println("x: " + xVals.toString());
+            System.out.println("y: " + yVals.toString());
+            System.out.println();
+        }
 
         input.close();
     }
@@ -214,20 +223,23 @@ class GraphingPanel extends JPanel implements ActionListener {
      * by 400/maxY or 800/maxX.
      */
     public void analyzeArrays() {
-        maxY = Collections.max(yVals);
-        System.out.println("Max Y: " + maxY);
-        for (int i = 0; i < yVals.size(); i++) {
-            yValsNew.add(yVals.get(i) * 400/maxY);
-        }
-
         maxX = Collections.max(xVals);
-        System.out.println("Max Y: " + maxX);
         for (int i = 0; i < xVals.size(); i++) {
             xValsNew.add(xVals.get(i) * 800/maxX);
         }
 
-        System.out.println("x new: " + xValsNew.toString());
-        System.out.println("y new: " + yValsNew.toString());
+        maxY = Collections.max(yVals);
+        for (int i = 0; i < yVals.size(); i++) {
+            yValsNew.add(yVals.get(i) * 400/maxY);
+        }
+
+        if (printToConsole.isSelected()) {
+            System.out.println("Max Y: " + maxX);
+            System.out.println("Max Y: " + maxY);
+            System.out.println("x new: " + xValsNew.toString());
+            System.out.println("y new: " + yValsNew.toString());
+            System.out.println("\n\n\n");
+        }
     }
 
     /**

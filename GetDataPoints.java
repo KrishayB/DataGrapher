@@ -9,17 +9,17 @@ public class GetDataPoints {
     private static void printPoints() {
         final int LENGTH = 100;
 
-        // Prints y
+        // Prints x
         for (int i = 1; i <= LENGTH; i++) {
-            System.out.print((int)(200 * Math.cos(i) + 200) + " ");
+            System.out.print(i + " ");
         }
 
         System.out.println();
         System.out.println();
 
-        // Prints x
+        // Prints y
         for (int i = 1; i <= LENGTH; i++) {
-            System.out.print(i + " ");
+            System.out.print((int)(200 * Math.cos(i) + 200) + " ");
         }
     }
 
