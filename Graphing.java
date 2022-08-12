@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+import java.awt.event.*;
 
 /**
  * This class just runs the program by creating the frame for it. It adds the GraphingPanel class to the frame.
@@ -38,14 +39,18 @@ public class Graphing {
 /**
  * This class is a JPanel where the graph will be drawn.
  */
-class GraphingPanel extends JPanel {
+class GraphingPanel extends JPanel implements ActionListener {
     private ArrayList<Integer> xVals;
     private ArrayList<Integer> yVals;
     private ArrayList<Integer> yValsNew;
     private ArrayList<Integer> xValsNew;
+    private ArrayList<String> allTxtFiles;
     private int[] previousPoint;
     private int maxY;
     private int maxX;
+    private JCheckBox showAxes;
+    private JCheckBox showTickmarks;
+    private JCheckBox showLabels;
 
     public GraphingPanel() {
         xVals = new ArrayList<Integer>();
@@ -54,11 +59,94 @@ class GraphingPanel extends JPanel {
         xValsNew = new ArrayList<Integer>();
         previousPoint = new int[2];
 
-        readFileAndInitArrays();
+        readFileAndInitArrays("data.txt");
         analyzeArrays();
 
         setLayout(new BorderLayout());
         setBackground(Color.BLACK);
+
+        JPanel northGrid = new JPanel();
+        northGrid.setLayout(new GridLayout(1, 2));
+        northGrid.setBackground(Color.BLACK);
+
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        menuPanel.setBackground(Color.BLACK);
+
+        String[] allFiles = fileNames(".");
+        allTxtFiles = new ArrayList<String>();
+
+        for (int i = 0; i < allFiles.length; i++) {
+            if (allFiles[i].endsWith(".txt"))
+                allTxtFiles.add(allFiles[i]);
+        }
+
+        JMenuBar fileBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("Open File");
+
+        for (int i = 0; i < allTxtFiles.size(); i++) {
+            JMenuItem newItem = new JMenuItem(allTxtFiles.get(i));
+            newItem.addActionListener(this);
+            fileMenu.add(newItem);
+        }
+
+        fileBar.add(fileMenu);
+        menuPanel.add(fileBar);
+        northGrid.add(menuPanel);
+
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        checkBoxPanel.setBackground(Color.BLACK);
+
+        showAxes = new JCheckBox("Show Axes");
+        showTickmarks = new JCheckBox("Show Tickmarks");
+        showLabels = new JCheckBox("Show Labels");
+        showAxes.setForeground(Color.WHITE);
+        showTickmarks.setForeground(Color.WHITE);
+        showLabels.setForeground(Color.WHITE);
+        showAxes.setSelected(true);
+        showTickmarks.setSelected(true);
+        showLabels.setSelected(true);
+        showAxes.addActionListener(this);
+        showTickmarks.addActionListener(this);
+        showLabels.addActionListener(this);
+
+        checkBoxPanel.add(showAxes);
+        checkBoxPanel.add(showTickmarks);
+        checkBoxPanel.add(showLabels);
+
+        northGrid.add(checkBoxPanel);
+
+        add(northGrid, BorderLayout.NORTH);
+    }
+
+    public void actionPerformed(ActionEvent evt) {
+        String command = evt.getActionCommand();
+
+        if (!(command.equals("Show Axes") || command.equals("Show Tickmarks") || command.equals("Show Labels"))) {
+            readFileAndInitArrays(command);
+            analyzeArrays();
+        }
+
+        this.repaint();
+    }
+
+    public static String[] fileNames(String directoryPath) {
+        File dir = new File(directoryPath);
+    
+        Collection<String> files = new ArrayList<String>();
+    
+        if (dir.isDirectory()) {
+            File[] listFiles = dir.listFiles();
+    
+            for (File file : listFiles) {
+                if (file.isFile()) {
+                    files.add(file.getName());
+                }
+            }
+        }
+    
+        return files.toArray(new String[]{});
     }
 
     /**
@@ -69,9 +157,15 @@ class GraphingPanel extends JPanel {
      * numbers into a different array called yVals. The previousPoint[] array is used for being able to draw in the
      * paintComponent() method.
      */
-    public void readFileAndInitArrays() {
+    public void readFileAndInitArrays(String fileName) {
+        xVals = new ArrayList<Integer>();
+        yVals = new ArrayList<Integer>();
+        yValsNew = new ArrayList<Integer>();
+        xValsNew = new ArrayList<Integer>();
+        previousPoint = new int[2];
+
         Scanner input = null;
-        File data = new File("data.txt");
+        File data = new File(fileName);
 
         try {
             input = new Scanner(data);
@@ -134,11 +228,36 @@ class GraphingPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.WHITE);
-        g.drawLine(100, 100, 100, 500);
-        g.drawLine(100, 500, 900, 500);
 
-        g.drawString("" + maxY, 25, 105);
-        g.drawString("" + maxX, 895, 520);
+        // Graph axes
+        if (showAxes.isSelected()) {
+            g.drawLine(100, 100, 100, 500);
+            g.drawLine(100, 500, 900, 500);
+        }
+
+        // Tick marks
+        if (showTickmarks.isSelected()) {
+            g.drawLine(90, 100, 110, 100);
+            g.drawLine(900, 490, 900, 510);
+
+            g.drawLine(90, 300, 110, 300);
+            g.drawLine(500, 490, 500, 510);
+
+            g.drawLine(100, 500, 90, 500);
+            g.drawLine(100, 500, 100, 510);
+        }
+
+        // Labels
+        if (showLabels.isSelected()) {
+            g.drawString("" + maxY, 25, 105);
+            g.drawString("" + maxX, 893, 550);
+
+            g.drawString("" + maxY/2.0, 25, 305);
+            g.drawString("" + maxX/2.0, 493, 550);
+
+            g.drawString("0", 25, 505);
+            g.drawString("0", 97, 550);
+        }
 
         for (int i = 1; i < xValsNew.size(); i++) {
             g.setColor(Color.GREEN);
@@ -153,4 +272,5 @@ class GraphingPanel extends JPanel {
             previousPoint[1] = yValsNew.get(i);
         }
     }
+
 }
