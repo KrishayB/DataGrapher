@@ -200,9 +200,10 @@ class GraphingPanel extends JPanel implements ActionListener {
             yVals.add(Integer.parseInt(value));
         }
 
+        System.out.println();
+        System.out.println();
         System.out.println("x: " + xVals.toString());
         System.out.println("y: " + yVals.toString());
-        System.out.println();
         System.out.println();
 
         input.close();
@@ -214,12 +215,13 @@ class GraphingPanel extends JPanel implements ActionListener {
      */
     public void analyzeArrays() {
         maxY = Collections.max(yVals);
-        System.out.println(maxY);
+        System.out.println("Max Y: " + maxY);
         for (int i = 0; i < yVals.size(); i++) {
             yValsNew.add(yVals.get(i) * 400/maxY);
         }
 
         maxX = Collections.max(xVals);
+        System.out.println("Max Y: " + maxX);
         for (int i = 0; i < xVals.size(); i++) {
             xValsNew.add(xVals.get(i) * 800/maxX);
         }
