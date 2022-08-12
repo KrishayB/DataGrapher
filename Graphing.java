@@ -40,17 +40,17 @@ public class Graphing {
  * This class is a JPanel where the graph will be drawn.
  */
 class GraphingPanel extends JPanel implements ActionListener {
-    private ArrayList<Integer> xVals;
-    private ArrayList<Integer> yVals;
-    private ArrayList<Integer> yValsNew;
-    private ArrayList<Integer> xValsNew;
-    private ArrayList<String> allTxtFiles;
-    private int[] previousPoint;
-    private int maxY;
-    private int maxX;
-    private JCheckBox showAxes;
-    private JCheckBox showTickmarks;
-    private JCheckBox showLabels;
+    private ArrayList<Integer> xVals; // Original x-values from the file
+    private ArrayList<Integer> yVals; // Original y-values from the file
+    private ArrayList<Integer> xValsNew; // Scaled y-values
+    private ArrayList<Integer> yValsNew; // Scaled x-values
+    private ArrayList<String> allTxtFiles; // Contains all the .txt files' names
+    private int[] previousPoint; // Contains the coordinates of the previous point when graphing
+    private int maxX; // Max x-value of the xVals ArrayList
+    private int maxY; // Max y-value of the yVals ArrayList
+    private JCheckBox showAxes; // For showing graph axes
+    private JCheckBox showTickmarks; // For showing tickmarks
+    private JCheckBox showLabels; // For showing labels on the graph
 
     public GraphingPanel() {
         xVals = new ArrayList<Integer>();
@@ -120,6 +120,12 @@ class GraphingPanel extends JPanel implements ActionListener {
         add(northGrid, BorderLayout.NORTH);
     }
 
+    /**
+     * Whenever this is called, the method first determines which component called it. If it was not a JCheckBox, then
+     * it knows that it was a JMenuItem. It will then reread the file, reinitialize the ArrayLists and arrays, and redraw
+     * the graph. Lastly, it repaints regardless of whether the component was a JCheckBox or a JMenuItem.
+     * @param evt - The ActionEvent that allows more information to be found out about the event
+     */
     public void actionPerformed(ActionEvent evt) {
         String command = evt.getActionCommand();
 
@@ -131,6 +137,12 @@ class GraphingPanel extends JPanel implements ActionListener {
         this.repaint();
     }
 
+    /**
+     * This method finds all the files in the directory.
+     * @param directoryPath - The path of the directory that is needed to be searched. In this case, it's the current directory,
+     * so the path is ".".
+     * @return - Returns a String[] containing the names of all of the directory's files.
+     */
     public static String[] fileNames(String directoryPath) {
         File dir = new File(directoryPath);
     
@@ -197,10 +209,8 @@ class GraphingPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * In this method, the values are scaled so that they cover the entire grid. All the y-values are multiplied by
-     * 400/maxY if the maximum value in the yVals[] array is less than 400 to increase the size of each array. If the
-     * maximum value is greater than 400, then the ratio which the points are muliplied by is flipped around to
-     * decrease the size of the array. The same thing goes for the xVals[] array.
+     * In this method, the values are scaled so that they cover the entire grid. All the x-values and y-values are multiplied
+     * by 400/maxY or 800/maxX.
      */
     public void analyzeArrays() {
         maxY = Collections.max(yVals);
@@ -219,10 +229,11 @@ class GraphingPanel extends JPanel implements ActionListener {
     }
 
     /**
-     * The grid is first drawn with the third and fourth lines in this method. Then, there is a for-loop that starts from
-     * index 1 and repeats until xVals.size(). The reason why it starts from 1 and not 0 is because we already have the
-     * point stored at the 0th index in the previousPoint[] array if i == 1 in the for-loop. The previousPoint[] is then
-     * reinitialized with new values, and the graphing repeats until all the data has been drawn.
+     * First, the axes, the tickmarks, and labels are drawn if needed. For drawing the graph, the grid is drawn first.
+     * Then, there is a for-loop that starts from index 1 and repeats until xVals.size(). The reason why it starts
+     * from 1 and not 0 is because we already have the point stored at the 0th index in the previousPoint[] array if
+     * i == 1 in the for-loop. The previousPoint[] is then reinitialized with new values, and the graphing repeats
+     * until all the data has been drawn.
      */
     @Override
     public void paintComponent(Graphics g) {
@@ -272,5 +283,4 @@ class GraphingPanel extends JPanel implements ActionListener {
             previousPoint[1] = yValsNew.get(i);
         }
     }
-
 }
