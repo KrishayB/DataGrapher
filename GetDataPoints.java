@@ -27,6 +27,7 @@ public class GetDataPoints {
         {
             try {
                 fileWriter = new FileWriter(new File(outputFileName));
+                fileWriter.write("x ");
             } catch (IOException e) {
                 System.out.println("IO error while opening file: " + outputFileName);
                 System.exit(1);
@@ -51,7 +52,7 @@ public class GetDataPoints {
         //blank lines
         if (outputFileName != null) {
             try {
-                fileWriter.write("\n\n");;
+                fileWriter.write("\ny ");;
             } catch (IOException e) {
                 System.out.println("IO error while writing to file: " + outputFileName);
                 System.exit(1);
@@ -59,7 +60,7 @@ public class GetDataPoints {
         }    
         else {
             System.out.println();
-            System.out.println();
+            System.out.print("\ny ");
         }
 
         // Prints y values based on the equation function
@@ -77,10 +78,12 @@ public class GetDataPoints {
             }
         }
 
-        try {
-            fileWriter.close();
-        } catch (IOException e) {
-            System.out.println("Error while closing file: " + outputFileName);
+        if (fileWriter != null) {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                System.out.println("Error while closing file: " + outputFileName);
+            }
         }
     }
 

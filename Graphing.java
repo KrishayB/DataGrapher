@@ -203,7 +203,7 @@ class GraphingPanel extends JPanel implements ActionListener {
             value = input.next();
         }
 
-        while (input.hasNextLine()) {
+        while (input.hasNext()) {
             value = input.next();
             yVals.add(Double.parseDouble(value));
         }
