@@ -40,25 +40,25 @@ public class Graphing {
  * This class is a JPanel where the graph will be drawn.
  */
 class GraphingPanel extends JPanel implements ActionListener {
-    private ArrayList<Integer> xVals; // Original x-values from the file
-    private ArrayList<Integer> yVals; // Original y-values from the file
-    private ArrayList<Integer> xValsNew; // Scaled y-values
-    private ArrayList<Integer> yValsNew; // Scaled x-values
+    private ArrayList<Double> xVals; // Original x-values from the file
+    private ArrayList<Double> yVals; // Original y-values from the file
+    private ArrayList<Integer> xValsScaled; // Scaled y-values
+    private ArrayList<Integer> yValsScaled; // Scaled x-values
     private ArrayList<String> allTxtFiles; // Contains all the .txt files' names
-    private int[] previousPoint; // Contains the coordinates of the previous point when graphing
-    private int maxX; // Max x-value of the xVals ArrayList
-    private int maxY; // Max y-value of the yVals ArrayList
+    private Point previousPoint; // Contains the coordinates of the previous point when graphing
+    private double maxX; // Max x-value of the xVals ArrayList
+    private double maxY; // Max y-value of the yVals ArrayList
     private JCheckBox showAxes; // For showing graph axes
     private JCheckBox showTickmarks; // For showing tickmarks
     private JCheckBox showLabels; // For showing labels on the graph
     private JCheckBox printToConsole; // For printing to console
 
     public GraphingPanel() {
-        xVals = new ArrayList<Integer>();
-        yVals = new ArrayList<Integer>();
-        yValsNew = new ArrayList<Integer>();
-        xValsNew = new ArrayList<Integer>();
-        previousPoint = new int[2];
+        xVals = new ArrayList<Double>();
+        yVals = new ArrayList<Double>();
+        yValsScaled = new ArrayList<Integer>();
+        xValsScaled = new ArrayList<Integer>();
+        previousPoint = new Point(0, 0);
         printToConsole = new JCheckBox("Print To Console");
 
         readFileAndInitArrays("data_set1.txt");
@@ -178,11 +178,11 @@ class GraphingPanel extends JPanel implements ActionListener {
      * paintComponent() method.
      */
     public void readFileAndInitArrays(String fileName) {
-        xVals = new ArrayList<Integer>();
-        yVals = new ArrayList<Integer>();
-        yValsNew = new ArrayList<Integer>();
-        xValsNew = new ArrayList<Integer>();
-        previousPoint = new int[2];
+        xVals = new ArrayList<Double>();
+        yVals = new ArrayList<Double>();
+        yValsScaled = new ArrayList<Integer>();
+        xValsScaled = new ArrayList<Integer>();
+        previousPoint = new Point(0, 0);
 
         Scanner input = null;
         File data = new File(fileName);
@@ -198,14 +198,14 @@ class GraphingPanel extends JPanel implements ActionListener {
         String value = input.next();
         
         while (!value.equals("y")) {
-            xVals.add(Integer.parseInt(value));
+            xVals.add(Double.parseDouble(value));
             
             value = input.next();
         }
 
         while (input.hasNextLine()) {
             value = input.next();
-            yVals.add(Integer.parseInt(value));
+            yVals.add(Double.parseDouble(value));
         }
 
         if (printToConsole.isSelected()) {
@@ -225,19 +225,19 @@ class GraphingPanel extends JPanel implements ActionListener {
     public void analyzeArrays() {
         maxX = Collections.max(xVals);
         for (int i = 0; i < xVals.size(); i++) {
-            xValsNew.add(xVals.get(i) * 800/maxX);
+            xValsScaled.add((int)(xVals.get(i) * 800/maxX));
         }
 
         maxY = Collections.max(yVals);
         for (int i = 0; i < yVals.size(); i++) {
-            yValsNew.add(yVals.get(i) * 400/maxY);
+            yValsScaled.add((int)(yVals.get(i) * 400/maxY));
         }
 
         if (printToConsole.isSelected()) {
             System.out.println("Max Y: " + maxX);
             System.out.println("Max Y: " + maxY);
-            System.out.println("x new: " + xValsNew.toString());
-            System.out.println("y new: " + yValsNew.toString());
+            System.out.println("x new: " + xValsScaled.toString());
+            System.out.println("y new: " + yValsScaled.toString());
             System.out.println("\n\n\n");
         }
     }
@@ -274,27 +274,26 @@ class GraphingPanel extends JPanel implements ActionListener {
 
         // Labels
         if (showLabels.isSelected()) {
-            g.drawString("" + maxY, 25, 105);
-            g.drawString("" + maxX, 893, 550);
+            g.drawString("" + (int)maxY, 25, 105);
+            g.drawString("" + (int)maxX, 893, 550);
 
-            g.drawString("" + maxY/2.0, 25, 305);
-            g.drawString("" + maxX/2.0, 493, 550);
+            g.drawString("" + (int)maxY/2.0, 25, 305);
+            g.drawString("" + (int)maxX/2.0, 493, 550);
 
             g.drawString("0", 25, 505);
             g.drawString("0", 97, 550);
         }
 
-        for (int i = 1; i < xValsNew.size(); i++) {
+        for (int i = 1; i < xValsScaled.size(); i++) {
             g.setColor(Color.GREEN);
             if (i == 1) {
-                previousPoint[0] = xValsNew.get(0);
-                previousPoint[1] = yValsNew.get(0);
+                previousPoint = new Point(xValsScaled.get(0), yValsScaled.get(0));
             }
 
-            g.drawLine(previousPoint[0] + 100, 500 - previousPoint[1], xValsNew.get(i) + 100, 500 - yValsNew.get(i));
+            g.drawLine(previousPoint.x + 100, 500 - previousPoint.y, xValsScaled.get(i) + 100, 500 - yValsScaled.get(i));
 
-            previousPoint[0] = xValsNew.get(i);
-            previousPoint[1] = yValsNew.get(i);
+            previousPoint.x = xValsScaled.get(i);
+            previousPoint.y = yValsScaled.get(i);
         }
     }
 }
