@@ -15,7 +15,7 @@ public class GetDataPoints {
      * @return resulting y value or f(x)
      */
     private static double equation(int x){
-        return 200 * Math.cos(x) + 200;
+        return 200 * Math.sin(x) + 200;
     }
 
     private static void printPoints(String outputFileName) {
@@ -76,10 +76,16 @@ public class GetDataPoints {
                 System.out.print(equation(x) + " ");
             }
         }
+
+        try {
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error while closing file: " + outputFileName);
+        }
     }
 
     public static void main(String[] args) {
-        if (args[0] instanceof String && args[0].endsWith(".txt")) {
+        if (args.length > 0 && args[0] instanceof String && args[0].endsWith(".txt")) {
             printPoints(args[0]);
         } else {
             printPoints(null);
