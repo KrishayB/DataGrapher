@@ -1,11 +1,7 @@
 # DataGrapher
 
 ### About:
-- This program helps to visualize data by graphing a set of x and y values provided in a .txt file.
-- It automatically scales the points to fit within a certain grid size.
-- It can be used to visualize an equation, but the axes will most likely be innacurate.[^bignote]
-
-- Comments are added if you would like to understand how the code works or make changes.
+This program helps to visualize data by graphing a set of x and y values provided in a .txt file. It automatically scales the points to fit within a certain grid size. It can also be used to visualize an equation, but the axes will most likely be innacurate.[^bignote] Comments are added if you would like to understand the code or make changes.
 
 ### Running the program:
 1. Clone the repository, download the code, or copy/paste it into a .java file. Make sure there is at least one .txt file with correctly formatted data.
@@ -14,8 +10,7 @@
 ![Example](GraphingExample.png)
 
 ### Other notes:
-- This program only graphs positive numbers.
-- There is a certain range of numbers, and really large numbers might cause some bugs.
+This program only graphs positive numbers.
 
 [^bignote]: Since you have to enter the x and y values in a .txt file to graph an equation, it will be hard
     to calculate those points yourself and enter them in manually. For this, the [GetDataPoints.java](GetDataPoints.java) file exists.
