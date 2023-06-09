@@ -13,7 +13,7 @@ This program helps to visualize data by graphing a set of x and y values provide
 This program only graphs positive numbers.
 
 [^bignote]: Since you have to enter the x and y values in a .txt file to graph an equation, it will be hard
-    to calculate those points yourself and enter them in manually. For this, the [GetDataPoints.java](GetDataPoints.java) file exists.
+    to calculate those points yourself and enter them in manually. For this, the [GetDataPoints.java](https://github.com/KrishayB/DataGrapher/blob/main/GetDataPoints.java) file exists.
     <br><br>The field variable `LENGTH` should be set to the number of data points needed. Right now, it is set to 100 data points.
     <br><br>The first for-loop will print the x-coordinates. If you want different x-coordinates, you can change it.
-    <br><br>The equation can be changed in the first method. The current equation is $200\cos (x) + 200$.
+    <br><br>The equation can be changed in the first method. The current equation is 200cos(x) + 200.
